@@ -6,7 +6,7 @@ Retrieve locationing data from NYWaterway API, the transform the **Location** to
   * request parameters:
     * time: new Date().getTime() is javascript
     * id: route of bus
-    > ``https://services.saucontds.com/tds-map/nyw/nywvehiclePositions.do?id=33&time=1468116622306``
+    > Example: ``https://services.saucontds.com/tds-map/nyw/nywvehiclePositions.do?id=33&time=1468116622306``
   * returned results:
     * x:
     * y:
