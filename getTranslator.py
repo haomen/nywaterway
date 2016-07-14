@@ -25,41 +25,58 @@ def getTrans(id):
     return result
 
 def GetTranslator(id):
+    """
+    :param id: route id to request info on
+    :return: a json object, and id requested
+    """
     url = "https://services.saucontds.com/tds-map/nyw/nywmapTranslation.do?id=%s" % (id)
     print url
     try:
         req = urllib2.Request(url)
         response = urllib2.urlopen(req)
         print 'Geting location for route %s...'%id
-        return response.read()
+        return (response.read(),id)
     except urllib2.HTTPError:
-        return "HTTPError Occured"
-def parseresult(result):
+        return ("HTTPError Occured","noid")
+def parseresult(result,id):
+    """
+    :param result: http request respond json object
+    :param id: route id requested on
+    :return: dictionary of vars with id as key
+    """
     if result == "HTTPError Occured":
         return "HTTPError Occured"
     else:
         result_object = json.loads(result)
-        return result_object
+        # result_object["id"]=id
+        dict={}
+        dict[id]=result_object
+        print dict
+        return dict
 
-route36 = GetTranslator(36)
-obj36 = parseresult(route36)
+route33, this_id = GetTranslator(33)
+print route33
+obj36 = parseresult(route33,this_id)
 
 route15 = GetTranslator(15)
 
 routesTrans=[]
-for i in range(100,200):
-    route = GetTranslator(i)
-    obj = parseresult(route)
-    routesTrans.append(obj)
+for i in range(0,100):
+    route, this_i = GetTranslator(i)
+    if this_i != "noid":
+        # if route exists, parse result
+        obj = parseresult(route,this_i)
+        routesTrans.append(obj)
 
-cleanlist=[]
-for i in routesTrans:
-    if i =="HTTPError Occured":
-        continue
-    cleanlist.append(i)
+# cleanlist=[]
+# for i in routesTrans:
+#     if i =="HTTPError Occured":
+#         continue
+#     cleanlist.append(i)
+# dict = {}
 
 with open(outfile, 'w') as outfile:
-    json.dump(cleanlist, outfile)
+    json.dump(routesTrans, outfile)
 # write out
 # f = open(outfile, 'wb')
 # csvWriter = csv.writer(f)
