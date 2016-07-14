@@ -13,3 +13,6 @@ Retrieve locationing data from NYWaterway API, the transform the **Location** to
     * z:
     * o:
 * map to standard gps coordinates
+    take 57st for example, id=33. time=new Date().gettime()
+    gps_x=(x-0.5)*5.32196e-5-74.007868
+    gps_y=-(y-0.5)*4.03097e-5+40.774535
