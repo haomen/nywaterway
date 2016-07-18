@@ -50,8 +50,10 @@ class nywBusPos(object):
             print "node_id:"+str(self.node_id)+' not existed!'
             return
 
-    def queryBusGPSPosition(self):
-        pos_list=self.queryBusPosition()
+    def queryBusGPSPosition(self,internal,pos_list):
+        if internal==True:
+            pos_list=self.queryBusPosition()
+
         for pos in pos_list:
             [gps_x,gps_y]=self.calcGPSCoord(pos['x'],pos['y'])
             pos['gps_x']=gps_x
