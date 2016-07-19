@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -8,12 +7,12 @@
     <meta charset="utf-8">
     <style>
       html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
+      height: 100%;
+      margin: 0;
+      padding: 0;
       }
       #map {
-        height: 100%;
+      height: 100%;
       }
     </style>
     <script src="test33p_js.geojson"></script>
@@ -25,48 +24,39 @@
 
       var map;
       function initMap() {
-        //start base map
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 40.759011, lng: -73.984472},
-          zoom: 15
-        });
+      //start base map
+      map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 40.759011, lng: -73.984472},
+      zoom: 15
+      });
 
-        <!-- //add GeoJson Routes -->
-        <!-- var data={ -->
-        <!--       "type": "FeatureCollection", -->
-        <!--       "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, -->
+	  map.data.addGeoJson(data);
+	  var featureStyle = {
+	  strokeColor: '#F08080',
+	  strokeWeight: 4
+	  }
 
-        <!--       "features": [ -->
-        <!--       { "type": "Feature", "properties": { "id": 33, "desp": "57th st weekday" }, "geometry": { "type": "LineString", "coordinates": [ [ -74.003096560033001, 40.760335660536199 ], [ -74.003664999641586, 40.759574623268506 ], [ -74.003681004273659, 40.759416330465676 ], [ -74.00348082986423, 40.759270220722328 ], [ -74.003144550134763, 40.759264142227018 ], [ -74.001607324097932, 40.761388943290193 ], [ -74.001319082882617, 40.761766413071619 ], [ -74.000574441041962, 40.762326530169979 ], [ -73.999605587019801, 40.763087551204627 ], [ -73.998981024344943, 40.763605041113557 ], [ -73.996690817567256, 40.766722136022167 ], [ -73.994856893210113, 40.769254742258724 ], [ -73.994620641797567, 40.769498257675515 ], [ -73.99434434108619, 40.769839181213939 ], [ -73.994172070884503, 40.770977657674933 ], [ -73.993943812780373, 40.771294229767861 ], [ -73.993735601946824, 40.771294218877657 ], [ -73.977153218676946, 40.764327271457795 ], [ -73.97676893385362, 40.764144549778912 ], [ -73.97396685948209, 40.762968935472699 ], [ -73.967594525072272, 40.760264174649606 ], [ -73.968483884633301, 40.758979818492293 ], [ -73.970092925093923, 40.759625593007435 ], [ -73.969107483147141, 40.760958641047473 ], [ -73.97064852120549, 40.761598301182282 ], [ -73.972409738757875, 40.762341492345406 ], [ -73.976828964848039, 40.764211531640306 ], [ -73.977181233661312, 40.764357717814732 ], [ -73.994420261148164, 40.771689984025585 ], [ -73.994676595811953, 40.770764596666304 ], [ -73.994788761663585, 40.770082728405441 ], [ -73.994900911234069, 40.769583504648303 ], [ -73.995093119512958, 40.769327810436636 ], [ -73.999209228095111, 40.763665924519806 ], [ -73.999497488845165, 40.763373694386161 ], [ -73.999913860866172, 40.763069287361894 ], [ -74.001323093615696, 40.762131702799721 ], [ -74.002395980890597, 40.760731407908004 ], [ -74.002812336514296, 40.760743574824311 ], [ -74.003100567108007, 40.760414806564469 ], [ -74.003100567108007, 40.760414806564469 ] ] } } -->
-        <!--       ] -->
-        <!--     } -->
-		map.data.addGeoJson(data);
-		var featureStyle = {
-			strokeColor: '#F08080',
-			strokeWeight: 4
-		}
+	  map.data.setStyle(featureStyle);
+      //map.data.loadGeoJson('www.googledrive.com/host/0BxV-BVJ4ihosdTRMbjA4Y2pnQ28');
 
-		map.data.setStyle(featureStyle);
-        //map.data.loadGeoJson('www.googledrive.com/host/0BxV-BVJ4ihosdTRMbjA4Y2pnQ28');
+      //Add marker for current location
+	  var myloc = new google.maps.Marker({
+	  clickable: false,
+	  icon: new google.maps.MarkerImage('//maps.gstatic.com/mapfiles/mobile/mobileimgs2.png',
+	  new google.maps.Size(22,22),
+	  new google.maps.Point(0,18),
+	  new google.maps.Point(11,11)),
+	  shadow: null,
+	  zIndex: 999,
+	  map: map// your google.maps.Map object
+	  });
 
-        //Add marker for current location
-		var myloc = new google.maps.Marker({
-		    clickable: false,
-		    icon: new google.maps.MarkerImage('//maps.gstatic.com/mapfiles/mobile/mobileimgs2.png',
-				new google.maps.Size(22,22),
-				new google.maps.Point(0,18),
-				new google.maps.Point(11,11)),
-		    shadow: null,
-		    zIndex: 999,
-		    map: map// your google.maps.Map object
-		});
-
-		if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos) {
-		    var me = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-		    myloc.setPosition(me);
-		}, function(error) {
-		    // ...
-		});
+	  if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos) {
+	  var me = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+	  myloc.setPosition(me);
+	  }, function(error) {
+	  // ...
+	  });
 
 
 
@@ -76,6 +66,6 @@
     </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxn2xQUi3rlb4eNxTvzSkACF36eLTxmSA&callback=initMap"
-    async defer></script>
+            async defer></script>
   </body>
 </html>
