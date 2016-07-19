@@ -260,7 +260,7 @@ class nywBusPos(object):
             [gps_x,gps_y]=self.calcGPSCoord(pos['x'],pos['y'])
             pos['gps_x']=gps_x
             pos['gps_y']=gps_y
-            pos['orientation']=pos['i']
+            pos['orientation']=pos['i']/5.4
             pos['bus_id']=pos['o']
             pos.pop('x')
             pos.pop('y')
