@@ -16,7 +16,6 @@
         height: 100%;
       }
     </style>
-    <script src="NYWtranslator.txt"></script>
   </head>
   <body>
     <div id="map"></div>
@@ -40,14 +39,73 @@
               { "type": "Feature", "properties": { "id": 33, "desp": "57th st weekday" }, "geometry": { "type": "LineString", "coordinates": [ [ -74.003096560033001, 40.760335660536199 ], [ -74.003664999641586, 40.759574623268506 ], [ -74.003681004273659, 40.759416330465676 ], [ -74.00348082986423, 40.759270220722328 ], [ -74.003144550134763, 40.759264142227018 ], [ -74.001607324097932, 40.761388943290193 ], [ -74.001319082882617, 40.761766413071619 ], [ -74.000574441041962, 40.762326530169979 ], [ -73.999605587019801, 40.763087551204627 ], [ -73.998981024344943, 40.763605041113557 ], [ -73.996690817567256, 40.766722136022167 ], [ -73.994856893210113, 40.769254742258724 ], [ -73.994620641797567, 40.769498257675515 ], [ -73.99434434108619, 40.769839181213939 ], [ -73.994172070884503, 40.770977657674933 ], [ -73.993943812780373, 40.771294229767861 ], [ -73.993735601946824, 40.771294218877657 ], [ -73.977153218676946, 40.764327271457795 ], [ -73.97676893385362, 40.764144549778912 ], [ -73.97396685948209, 40.762968935472699 ], [ -73.967594525072272, 40.760264174649606 ], [ -73.968483884633301, 40.758979818492293 ], [ -73.970092925093923, 40.759625593007435 ], [ -73.969107483147141, 40.760958641047473 ], [ -73.97064852120549, 40.761598301182282 ], [ -73.972409738757875, 40.762341492345406 ], [ -73.976828964848039, 40.764211531640306 ], [ -73.977181233661312, 40.764357717814732 ], [ -73.994420261148164, 40.771689984025585 ], [ -73.994676595811953, 40.770764596666304 ], [ -73.994788761663585, 40.770082728405441 ], [ -73.994900911234069, 40.769583504648303 ], [ -73.995093119512958, 40.769327810436636 ], [ -73.999209228095111, 40.763665924519806 ], [ -73.999497488845165, 40.763373694386161 ], [ -73.999913860866172, 40.763069287361894 ], [ -74.001323093615696, 40.762131702799721 ], [ -74.002395980890597, 40.760731407908004 ], [ -74.002812336514296, 40.760743574824311 ], [ -74.003100567108007, 40.760414806564469 ], [ -74.003100567108007, 40.760414806564469 ] ] } }
               ]
             }
-		map.data.addGeoJson(data);
+        var points = {
+            "type": "FeatureCollection",
+            "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+
+            "features": [
+            { "type": "Feature", "properties": { "orin": 1134, "id": 133170989, "long": -74.003424, "lat": 40.759923, "Orient": 210 }, "geometry": { "type": "Point", "coordinates": [ -74.003424163399998, 40.759922733750003 ] } },
+            { "type": "Feature", "properties": { "orin": 1188, "id": 133171009, "long": -74.003477, "lat": 40.759600, "Orient": 220 }, "geometry": { "type": "Point", "coordinates": [ -74.003477383, 40.759600256150001 ] } },
+            { "type": "Feature", "properties": { "orin": 1350, "id": 133171021, "long": -73.985010, "lat": 40.760850, "Orient": 250 }, "geometry": { "type": "Point", "coordinates": [ -73.985010181800007, 40.760849856850001 ] } },
+            { "type": "Feature", "properties": { "orin": 1242, "id": 133170979, "long": -74.003265, "lat": 40.760084, "Orient": 230 }, "geometry": { "type": "Point", "coordinates": [ -74.003264504599997, 40.760083972549999 ] } },
+            { "type": "Feature", "properties": { "orin": 1134, "id": 133171005, "long": -74.003105, "lat": 40.760326, "Orient": 210 }, "geometry": { "type": "Point", "coordinates": [ -74.003104845799996, 40.760325830749998 ] } },
+            { "type": "Feature", "properties": { "orin": 1134, "id": 133171027, "long": -74.003637, "lat": 40.759600, "Orient": 210 }, "geometry": { "type": "Point", "coordinates": [ -74.003637041800005, 40.759600256150001 ] } },
+            { "type": "Feature", "properties": { "orin": 1134, "id": 133171035, "long": -74.003531, "lat": 40.759802, "Orient": 210 }, "geometry": { "type": "Point", "coordinates": [ -74.003530602600009, 40.759801804650003 ] } },
+            { "type": "Feature", "properties": { "orin": 1512, "id": 133171015, "long": -74.002786, "lat": 40.760850, "Orient": 280 }, "geometry": { "type": "Point", "coordinates": [ -74.002785528200008, 40.760849856850001 ] } },
+            { "type": "Feature", "properties": { "orin": 162, "id": 133171003, "long": -74.003371, "lat": 40.759802, "Orient": 30 }, "geometry": { "type": "Point", "coordinates": [ -74.003370943800007, 40.759801804650003 ] } },
+            { "type": "Feature", "properties": { "orin": 1188, "id": 133170973, "long": -74.003477, "lat": 40.759802, "Orient": 220 }, "geometry": { "type": "Point", "coordinates": [ -74.003477383, 40.759801804650003 ] } },
+            { "type": "Feature", "properties": { "orin": 162, "id": 133170991, "long": -74.003318, "lat": 40.759882, "Orient": 30 }, "geometry": { "type": "Point", "coordinates": [ -74.003317724200002, 40.759882424049998 ] } },
+            { "type": "Feature", "properties": { "orin": 1188, "id": 133171037, "long": -74.003265, "lat": 40.760003, "Orient": 220 }, "geometry": { "type": "Point", "coordinates": [ -74.003264504599997, 40.760003353149997 ] } },
+            { "type": "Feature", "properties": { "orin": 1188, "id": 133171007, "long": -74.003318, "lat": 40.759842, "Orient": 220 }, "geometry": { "type": "Point", "coordinates": [ -74.003317724200002, 40.75984211435 ] } },
+            { "type": "Feature", "properties": { "orin": 1134, "id": 1030000300, "long": -74.003318, "lat": 40.760003, "Orient": 210 }, "geometry": { "type": "Point", "coordinates": [ -74.003317724200002, 40.760003353149997 ] } },
+            { "type": "Feature", "properties": { "orin": 1080, "id": 945250838, "long": -74.003371, "lat": 40.759761, "Orient": 200 }, "geometry": { "type": "Point", "coordinates": [ -74.003370943800007, 40.759761494949998 ] } },
+            { "type": "Feature", "properties": { "orin": 1080, "id": 133161454, "long": -74.003158, "lat": 40.759963, "Orient": 200 }, "geometry": { "type": "Point", "coordinates": [ -74.003158065400001, 40.75996304345 ] } },
+            { "type": "Feature", "properties": { "orin": 162, "id": 133170961, "long": -74.003105, "lat": 40.760124, "Orient": 30 }, "geometry": { "type": "Point", "coordinates": [ -74.003104845799996, 40.760124282249997 ] } },
+            { "type": "Feature", "properties": { "orin": 1080, "id": 133171023, "long": -73.981391, "lat": 40.752989, "Orient": 200 }, "geometry": { "type": "Point", "coordinates": [ -73.981391249, 40.752989465349998 ] } }
+            ]
+         }
+        <!--var routedis = new google.maps.Data();-->
+		<!--routedis.addGeoJson(data);-->
+		<!--routedis.setMap(map)-->
+        var Pointdata = new google.maps.Data();
+        Pointdata.loadGeoJson("test33p_js.geojson",function(e){
+            var h ="";
+            var o = h.getProperty("Orient");
+        });
+        Pointdata.setMap(map)
+		Pointdata.setStyle({
+              icon: {   path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        strokeColor: "blue",
+                        rotation: 0,
+                        scale: 2}
+            });
+        var infowindow = new google.maps.InfoWindow();
+        // When the user clicks, open an infowindow
+        map.data.addListener('click', function(event) {
+            var myHTML = event.feature.getProperty("Orient");
+            infowindow.setContent("<div style='width:150px;'>"+myHTML+"</div>");
+            // position the infowindow on the marker
+            infowindow.setPosition(event.feature.getGeometry().get());
+            // anchor the infowindow on the marker
+            infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)});
+            infowindow.open(map);
+        });
+
+        <!--// Use custom marker from "icon" field in the geojson-->
+        <!--map.data.setStyle(function(feature) {-->
+            <!--return {icon:feature.getProperty('icon')};-->
+        <!--});        -->
+        <!--Pointdata.setStyle(function(feature) {-->
+            <!--var orient= feature.getProperty('Orient');-->
+            <!--var te=1;-->
+            <!--return {icon:{rotation: orient}};-->
+        <!--});-->
 		var featureStyle = {
 			strokeColor: '#F08080',
 			strokeWeight: 4
 		}
 
-		map.data.setStyle(featureStyle);
-        //map.data.loadGeoJson('www.googledrive.com/host/0BxV-BVJ4ihosdTRMbjA4Y2pnQ28');
+		//routedis.setStyle(featureStyle);
 
         //Add marker for current location
 		var myloc = new google.maps.Marker({
