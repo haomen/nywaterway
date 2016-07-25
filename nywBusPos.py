@@ -292,6 +292,30 @@ class nywBusPos(object):
             i+=1
         return pos_list
 
+    def queryBusGPSPositionORGeojson(self):
+        pos_list=self.queryBusGPSPositionOnRoad()
+
+        output_json='''{\n"type":"FeatureCollection",\n'''
+        output_json+='''"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },\n\n"features": [\n'''
+        for item in pos_list[:-1]:
+            route_qid=str(self.node_id)
+            busid=str(item["bus_id"])
+            lon=str(item["gps_x"])
+            lat=str(item["gps_y"])
+            orientation=str(item["orientation"])
+            output_json+='''{ "type": "Feature", "properties":{"route_qid":'''+route_qid+", \"bus_id\":"+busid+",\"orientation\":"+orientation+'''}, "geometry": { "type": "Point", "coordinates": ['''+lon+','+lat+''']}},\n'''
+
+        item=pos_list[-1]
+        route_qid=str(self.node_id)
+        busid=str(item["bus_id"])
+        lon=str(item["gps_x"])
+        lat=str(item["gps_y"])
+        orientation=str(item["orientation"])
+        output_json+='''{ "type": "Feature", "properties":{"route_qid":'''+route_qid+", \"bus_id\":"+busid+",\"orientation\":"+orientation+'''}, "geometry": { "type": "Point", "coordinates": ['''+lon+','+lat+''']}}\n'''
+
+        output_json+=']\n}\n'
+        return output_json
+
 if __name__=="__main__":
     if len(sys.argv)!=2:
         print 'should be:\n'+sys.argv[0]+' <route node id>'
@@ -311,3 +335,5 @@ if __name__=="__main__":
     gps_pos_onroad_list=route1.queryBusGPSPositionOnRoad()
     for pos in gps_pos_onroad_list:
         print pos
+    geo_json=route1.queryBusGPSPositionORGeojson()
+    print geo_json
