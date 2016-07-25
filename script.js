@@ -82,7 +82,9 @@ function initMap() {
                        rotation: feature.getProperty('orientation'),
                        fillOpacity:1,
 //                       size: new google.maps.Size(2, 2),
-                       scale: 0.05
+                       scale: 0.05,
+                       anchor: new google.maps.Point(250, 250)
+
                         }
          };
         };
