@@ -320,7 +320,7 @@ if __name__=="__main__":
     if len(sys.argv)!=2:
         print 'should be:\n'+sys.argv[0]+' <route node id>'
         sys.exit(1)
-    route1=nywBusPos(33)
+    route1=nywBusPos(int(sys.argv[1]))
 
     #get raw output from nywaterway bus location (relative location to their static image coordinate system)
     pos_list=route1.queryBusPosition()
