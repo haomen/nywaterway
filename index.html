@@ -13,70 +13,26 @@
          #map {
              height: 100%;
          }
+         #info-box{
+            border: 1px solid black;
+            background-color: white;
+            bottom: 30px;
+            height: 45px;
+            left: 30px;
+            position: absolute;
+            padding: 10px;
+
+         }
+
         </style>
     </head>
     <body>
         <div id="map"></div>
-        <script>
-
-         var map;
-         function initMap() {
-             map = new google.maps.Map(document.getElementById('map'), {
-                 zoom:15,
-                 center: {lat: 40.759011, lng: -73.984472}
-             });
-
-             //set route
-             var bus_route=new google.maps.Data();
-             bus_route.loadGeoJson("mhroutes.geojson");
-             bus_route.setMap(map);
-
-             var setColorStyle = function(feature) {
-			  	if(feature.getProperty('peak')==1){
-			  	    return {
-                         strokeColor: '	#B8860B',
-                         strokeWeight: 4
-                     }
-                 }else{
-			  	    return {
-                         strokeColor: '#556B2F',
-                         strokeWeight: 2
-                     }
-                 };
-			 };
-             bus_route.setStyle(setColorStyle);
-
-             // Load GeoJSON for bus locations.
-             var bus_location=new google.maps.Data();
-             bus_location.loadGeoJson('sample.json');
-             bus_location.setMap(map);
-
-             //style fucntions
-			var setIcon = function(feature) {
-			  	return {
-                     icon: {   path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                               strokeColor: "#3366cc",
-                               rotation: feature.getProperty('orientation'),
-                               scale: 4}
-                 };
-				};
-
-			// Set the stroke width, and fill color for each polygon, with default colors at first
-			bus_location.setStyle(setIcon);
-
-
-
-             var infowin=new google.maps.InfoWindow('nyc bus is here!');
-             // Set mouseover event for each feature.
-             bus_location.addListener('click',function(event){
-                 var pos='<div text-align:center;>bus_id:'+event.feature.getProperty("bus_id")+'<br/>route_id:'+event.feature.getProperty("route_qid")+'<br/>orientation:'+event.feature.getProperty("orientation")+'<br/>lat: '+event.feature.getGeometry().get().lat().toFixed(5)+'<br/>long: '+event.feature.getGeometry().get().lng().toFixed(5)+'</div>';
-                 infowin.setContent(pos);
-                 infowin.setPosition(event.feature.getGeometry().get());
-                 infowin.open(map);
-             });
-
-         }
-        </script>
+        <div id="info-box">
+            <div id ="info1"></div>
+            <div id = "info2" style ="color: brown;    font-weight: bold;"></div>
+        </div>
+        <script src="script.js"></script>
         <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxn2xQUi3rlb4eNxTvzSkACF36eLTxmSA&callback=initMap">
         </script>
