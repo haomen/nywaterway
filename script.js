@@ -46,7 +46,7 @@ function loadBus(){
             var infowin=new google.maps.InfoWindow();
             // Set mouseover event for each feature.
             bus_location.addListener('click',function(event){
-                var pos='<div text-align:center;>bus_id:'+event.feature.getProperty("bus_id")+'<br/>route_id:'+event.feature.getProperty("route_qid")+'<br/>orientation:'+event.feature.getProperty("orientation")+'<br/>lat: '+event.feature.getGeometry().get().lat().toFixed(5)+'<br/>long: '+event.feature.getGeometry().get().lng().toFixed(5)+'</div>';
+                var pos='<div text-align:center;>bus_id:'+event.feature.getProperty("bus_id")+'<br/>route_id:'+event.feature.getProperty("route_qid")+'<br/>orientation:'+event.feature.getProperty("orientation")+'<br/>lat: '+event.feature.getGeometry().get().lat().toFixed(5)+'<br/>long: '+event.feature.getGeometry().get().lng().toFixed(5)+'<br/>last_update:'+event.feature.getProperty("last_update")+'</div>';
                 infowin.setContent(pos);
                 infowin.setPosition(event.feature.getGeometry().get());
                 infowin.open(map);
@@ -56,9 +56,9 @@ function loadBus(){
             console.log(ajaxOptions);
             console.log(thrownError);
         },
-        complete:function(data){
-            setTimeout(loadBus,timer);
-        }
+        // complete:function(data){
+        //     setTimeout(loadBus,timer);
+        // }
     });
 }
 
