@@ -11,13 +11,13 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 from flask.ext.jsonpify import jsonify
 from nywBusPos import nywBusPos
-import json,thread,time,datetime
+import json,thread,time,datetime,MySQLdb
 
 app = Flask(__name__)
 api = Api(app)
 
 bus_pool={}
-interval=5
+interval=20
 route_ids=[1,21,22,32,43]
 
 def busPos2GeoJson(bus_pos):
@@ -55,6 +55,8 @@ def getAllBusLocations():
     #update pos_pool
     while True:
         print 'refresh bus locations at:\t'+str(datetime.datetime.now())
+        db=MySQLdb.connect("localhost","nywaterway","nywaterway","nywaterway")
+        cursor=db.cursor()
         for route_id in route_ids:
             #print route_id
             a_route=nywBusPos(route_id)
@@ -72,7 +74,16 @@ def getAllBusLocations():
                         "last_update":datetime.datetime.now()
                     }
                 })
+                #insert points into db
+                sql_query="INSERT INTO bus_location (route_id,bus_id,gps_x,gps_y,orientation,update_time) values("+str(route_id)+','+str(bus_pos["bus_id"])+","+str(bus_pos["gps_x"])+","+str(bus_pos["gps_y"])+","+str(bus_pos["orientation"])+",now())"
+                try:
+                    cursor.execute(sql_query)
+                    db.commit()
+                except Exception as e:
+                    print "error writing record into db "+e
+                    db.rollback()
             bus_pool.update(bus_pos_item)
+        db.close()
         time.sleep(interval)
 
 class NywBusPosService(Resource):
