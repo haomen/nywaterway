@@ -4,6 +4,7 @@ import sys
 import urllib,urllib2,httplib
 import datetime
 import json
+import onRoad
 
 class nywBusPos(object):
     gps_calc_map={
@@ -260,7 +261,7 @@ class nywBusPos(object):
             [gps_x,gps_y]=self.calcGPSCoord(pos['x'],pos['y'])
             pos['gps_x']=gps_x
             pos['gps_y']=gps_y
-            pos['orientation']=pos['i']
+            pos['orientation']=pos['i']/5.4
             pos['bus_id']=pos['o']
             pos.pop('x')
             pos.pop('y')
@@ -268,18 +269,71 @@ class nywBusPos(object):
             pos.pop('o')
         return pos_list
 
+    def queryBusGPSPositionOnRoad(self):
+        pos_list=self.queryBusPosition()
+        raw_gps=[]
+        for pos in pos_list:
+            [gps_x,gps_y]=self.calcGPSCoord(pos['x'],pos['y'])
+            raw_gps.append([gps_y,gps_x])
+            pos['gps_x']=gps_x
+            pos['gps_y']=gps_y
+            pos['orientation']=pos['i']/5.4
+            pos['bus_id']=pos['o']
+            pos.pop('x')
+            pos.pop('y')
+            pos.pop('i')
+            pos.pop('o')
+        a_road=onRoad.onRoad()
+        new_gps=a_road.getRoadPositions(raw_gps)
+        i=0
+        for pos in pos_list:
+            pos['gps_y']=new_gps[i][0]
+            pos['gps_x']=new_gps[i][1]
+            i+=1
+        return pos_list
+
+    def queryBusGPSPositionORGeojson(self):
+        pos_list=self.queryBusGPSPositionOnRoad()
+
+        output_json='''{"type":"FeatureCollection",'''
+        output_json+='''"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },"features": ['''
+        for item in pos_list[:-1]:
+            route_qid=str(self.node_id)
+            busid=str(item["bus_id"])
+            lon=str(item["gps_x"])
+            lat=str(item["gps_y"])
+            orientation=str(item["orientation"])
+            output_json+='''{ "type": "Feature", "properties":{"route_qid":'''+route_qid+", \"bus_id\":"+busid+",\"orientation\":"+orientation+'''}, "geometry": { "type": "Point", "coordinates": ['''+lon+','+lat+''']}},'''
+
+        item=pos_list[-1]
+        route_qid=str(self.node_id)
+        busid=str(item["bus_id"])
+        lon=str(item["gps_x"])
+        lat=str(item["gps_y"])
+        orientation=str(item["orientation"])
+        output_json+='''{ "type": "Feature", "properties":{"route_qid":'''+route_qid+", \"bus_id\":"+busid+",\"orientation\":"+orientation+'''}, "geometry": { "type": "Point", "coordinates": ['''+lon+','+lat+''']}}'''
+
+        output_json+=']}'
+        return json.loads(output_json)
+
 if __name__=="__main__":
     if len(sys.argv)!=2:
-        print 'should be:\n'+sys.argv[0]+' <route node id>'
+        print 'should be:'+sys.argv[0]+' <route node id>'
         sys.exit(1)
-    route1=nywBusPos(33)
+    route1=nywBusPos(int(sys.argv[1]))
 
     #get raw output from nywaterway bus location (relative location to their static image coordinate system)
     pos_list=route1.queryBusPosition()
     for pos in pos_list:
         print pos
-
+    print '----'
     #get gps location and orientation of this route
     gps_pos_list=route1.queryBusGPSPosition()
     for pos in gps_pos_list:
         print pos
+    print '-----'
+    gps_pos_onroad_list=route1.queryBusGPSPositionOnRoad()
+    for pos in gps_pos_onroad_list:
+        print pos
+    geo_json=route1.queryBusGPSPositionORGeojson()
+    print geo_json

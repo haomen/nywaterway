@@ -28,6 +28,6 @@ if __name__=='__main__':
     a_route=nywBusPos.nywBusPos(int(sys.argv[1]))
     while True:
         print "querying route "+sys.argv[1]+" at time "+str(datetime.datetime.now())
-        pos_list=a_route.queryBusGPSPosition()
+        pos_list=a_route.queryBusGPSPositionOnRoad()
         writePos2Mysql(sys.argv[1],pos_list)
         time.sleep(30)

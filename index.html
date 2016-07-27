@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Data Layer: Event Handling</title>
+        <meta name="viewport" content="initial-scale=1.0">
+        <meta charset="utf-8">
+        <style>
+         html, body {
+             height: 100%;
+             margin: 0;
+             padding: 0;
+         }
+         #map {
+             height: 100%;
+         }
+         #info-box{
+            border: 1px solid black;
+            background-color: white;
+            bottom: 30px;
+            height: 45px;
+            left: 30px;
+            position: absolute;
+            padding: 10px;
+
+         }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <div id="info-box">
+            <div id ="info1"></div>
+            <div id = "info2" style ="color: brown;    font-weight: bold;"></div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <script src="script.js"></script>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxn2xQUi3rlb4eNxTvzSkACF36eLTxmSA&callback=initMap">
+        </script>
+    </body>
+</html>
