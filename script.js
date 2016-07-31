@@ -114,6 +114,40 @@ function loadRoute(){
             }};};
     bus_route.setStyle(setColorStyle);
 }
+// Try HTML5 geolocation.
+function GetMyLocation(){
+    var image = {
+        url:"shadowl.svg",
+        scaledSize: new google.maps.Size(25, 25), // scaled size
+        origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(24, 24) // anchor
+    };
+    var mylocation = new google.maps.Marker({icon: image});
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+
+        mylocation.setPosition(pos);
+        mylocation.setMap(map);
+        map.setCenter(pos);
+      }, function() {
+        handleLocationError(true, infoWindow, map.getCenter());
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+infoWindow.setPosition(pos);
+infoWindow.setContent(browserHasGeolocation ?
+                      'Error: The Geolocation service failed.' :
+                      'Error: Your browser doesn\'t support geolocation.');
+}
 
 //SET MAP
 var map;
@@ -135,4 +169,8 @@ function initMap() {
     loadRoute();
     // Load GeoJSON for bus locations.
     loadBus();
+
+    // Try HTML5 geolocation.
+    GetMyLocation();
+
 }
