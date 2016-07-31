@@ -13,10 +13,10 @@ var datetime = "Last Sync: " + currentdate.getDate() + "/"
     + date_of_week;
 document.getElementById("info1").innerHTML = datetime;
 var location_url="http://menhao.net:30444/nywaterway/32";
-var timer=5000;
+var timer=3000;
+var bus_location=null;
 
 function loadBus(){
-    var bus_location=new google.maps.Data();
     $.ajax({
         type: "GET",
         data:{"callback":"callback"},
@@ -25,6 +25,17 @@ function loadBus(){
         async:false,
         jsonpCallback: 'callback',
         success: function(bus_gps){
+            //clean geojson
+			console.log('printing map data features');
+			if(bus_location!=null){
+				bus_location.forEach(function(feature){
+					console.log(feature);
+					bus_location.remove(feature);
+				});
+			}
+            bus_location=new google.maps.Data();
+
+            //bus_location
             bus_location.addGeoJson(bus_gps);
             //style fucntions
             var setIcon = function(feature) {
@@ -56,9 +67,9 @@ function loadBus(){
             console.log(ajaxOptions);
             console.log(thrownError);
         },
-        // complete:function(data){
-        //     setTimeout(loadBus,timer);
-        // }
+        complete:function(data){
+            setTimeout(loadBus,timer);
+        }
     });
 }
 
