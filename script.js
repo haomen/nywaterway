@@ -26,13 +26,9 @@ function loadBus(){
         jsonpCallback: 'callback',
         success: function(bus_gps){
             //clean geojson
-			console.log('printing map data features');
-			if(bus_location!=null){
-				bus_location.forEach(function(feature){
-					console.log(feature);
-					bus_location.remove(feature);
-				});
-			}
+            if(bus_location!=null){
+                bus_location.setMap(null);
+            }
             bus_location=new google.maps.Data();
 
             //bus_location

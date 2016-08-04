@@ -11,14 +11,21 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 from flask.ext.jsonpify import jsonify
 from nywBusPos import nywBusPos
-import json,thread,time,datetime,MySQLdb
+import json,thread,time,datetime,MySQLdb,os,logging
 
 app = Flask(__name__)
 api = Api(app)
 
 bus_pool={}
-interval=20
+interval=10
 route_ids=[1,21,22,32,43]
+
+logger=logging.getLogger('nywaterway')
+hdlr=logging.FileHandler('/t2/devs/nywaterway/logs/nywaterway-'+str(datetime.datetime.now().date())+'-'+str(datetime.datetime.now().time())+'.log')
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+hdlr.setFormatter(formatter)
+logger.addHandler(hdlr)
+logger.setLevel(logging.DEBUG)
 
 def busPos2GeoJson(bus_pos):
     bus_gj={}
@@ -54,7 +61,7 @@ def getAllBusLocations():
     #query buslocation from all route id,get all bus location at this time
     #update pos_pool
     while True:
-        print 'refresh bus locations at:\t'+str(datetime.datetime.now())
+        logger.info('refresh bus locations at:\t'+str(datetime.datetime.now()))
         db=MySQLdb.connect("localhost","nywaterway","nywaterway","nywaterway")
         cursor=db.cursor()
         for route_id in route_ids:
@@ -80,25 +87,36 @@ def getAllBusLocations():
                     cursor.execute(sql_query)
                     db.commit()
                 except Exception as e:
-                    print "error writing record into db "+e
+                    logger.error("error writing record into db "+e)
                     db.rollback()
             bus_pool.update(bus_pos_item)
         db.close()
+        time.sleep(interval)
+def checkTime():
+    while True:
+        if datetime.datetime.now().time()>datetime.time(23,00,00):
+            logger.info('time is up, time to go to sleep today, exit now..')
+            os._exit(1)
         time.sleep(interval)
 
 class NywBusPosService(Resource):
     def get(self, route_id):
         #a_route=nywBusPos(int(route_id))
         #return jsonify(a_route.queryBusGPSPositionORGeojson())
-        print len(bus_pool)
+        logger.info(len(bus_pool))
         return jsonify(busPos2GeoJson(bus_pool))
 
 
+
 if __name__ == '__main__':
+
     # start web server
     api.add_resource(NywBusPosService, '/nywaterway/<string:route_id>')
     thread.start_new_thread(getAllBusLocations,())
-    app.run(host='0.0.0.0',port=30444,debug=True)
+    thread.start_new_thread(checkTime,())
+
+    app.logger.addHandler(hdlr)
+    app.run(host='0.0.0.0',port=30444)
     # while True:
     #     pass
     # a_map=NywBusQueryPos()
