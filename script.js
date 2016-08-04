@@ -13,8 +13,9 @@ var datetime = "Last Sync: " + currentdate.getDate() + "/"
     + date_of_week;
 document.getElementById("info1").innerHTML = datetime;
 var location_url="http://menhao.net:30444/nywaterway/32";
-var timer=3000;
-var bus_location=null;
+var timer=5000;
+
+var bus_location =null;
 
 function loadBus(){
     $.ajax({
@@ -25,13 +26,26 @@ function loadBus(){
         async:false,
         jsonpCallback: 'callback',
         success: function(bus_gps){
-            //clean geojson
-            if(bus_location!=null){
-                bus_location.setMap(null);
-            }
-            bus_location=new google.maps.Data();
+            var currentdate = new Date();
+            var date_of_week = currentdate.getDay();
+            var current_hour = currentdate.getHours();
+            var current_min = currentdate.getMinutes();
+            var current_time = current_hour+current_min/100;
+            var datetime = "Last Sync: " + currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/"
+                + currentdate.getFullYear() + " @ "
+                + current_hour + ":"
+                + current_min + ":"
+                + currentdate.getSeconds() +"; <br>Day of the week: "
+                + date_of_week;
+            document.getElementById("info1").innerHTML = datetime;
+            console.log(bus_location);
 
-            //bus_location
+            if (bus_location!=null){
+                bus_location.setMap(null);
+            };
+            bus_location = new google.maps.Data();
+            //adding data
             bus_location.addGeoJson(bus_gps);
             //style fucntions
             var setIcon = function(feature) {
@@ -63,9 +77,9 @@ function loadBus(){
             console.log(ajaxOptions);
             console.log(thrownError);
         },
-        complete:function(data){
-            setTimeout(loadBus,timer);
-        }
+         complete:function(data){
+             setTimeout(loadBus,timer);
+         }
     });
 }
 
@@ -100,6 +114,40 @@ function loadRoute(){
             }};};
     bus_route.setStyle(setColorStyle);
 }
+// Try HTML5 geolocation.
+function GetMyLocation(){
+    var image = {
+        url:"shadowl.svg",
+        scaledSize: new google.maps.Size(25, 25), // scaled size
+        origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(24, 24) // anchor
+    };
+    var mylocation = new google.maps.Marker({icon: image});
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+
+        mylocation.setPosition(pos);
+        mylocation.setMap(map);
+        map.setCenter(pos);
+      }, function() {
+        handleLocationError(true, infoWindow, map.getCenter());
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+infoWindow.setPosition(pos);
+infoWindow.setContent(browserHasGeolocation ?
+                      'Error: The Geolocation service failed.' :
+                      'Error: Your browser doesn\'t support geolocation.');
+}
 
 //SET MAP
 var map;
@@ -121,5 +169,8 @@ function initMap() {
     loadRoute();
     // Load GeoJSON for bus locations.
     loadBus();
-    //setTimeout(loadBus,timer);
+
+    // Try HTML5 geolocation.
+    GetMyLocation();
+
 }
