@@ -4,14 +4,6 @@ var date_of_week = currentdate.getDay();
 var current_hour = currentdate.getHours();
 var current_min = currentdate.getMinutes();
 var current_time = current_hour+current_min/100;
-var datetime = "Last Sync: " + currentdate.getDate() + "/"
-    + (currentdate.getMonth()+1)  + "/"
-    + currentdate.getFullYear() + " @ "
-    + current_hour + ":"
-    + current_min + ":"
-    + currentdate.getSeconds() +"; <br>Day of the week: "
-    + date_of_week;
-document.getElementById("info1").innerHTML = datetime;
 var location_url="http://menhao.net:30444/nywaterway/32";
 var timer=5000;
 
@@ -44,15 +36,7 @@ function loadBus(){
             var current_hour = currentdate.getHours();
             var current_min = currentdate.getMinutes();
             var current_time = current_hour+current_min/100;
-            var datetime = "Last Sync: " + currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/"
-                + currentdate.getFullYear() + " @ "
-                + current_hour + ":"
-                + current_min + ":"
-                + currentdate.getSeconds() +"; <br>Day of the week: "
-                + date_of_week+"; <br>currtime: "
-                + current_time;
-            document.getElementById("info1").innerHTML = datetime;
+
             console.log(bus_location);
 
             if (bus_location!=null){
