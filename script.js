@@ -15,6 +15,19 @@ document.getElementById("info1").innerHTML = datetime;
 var location_url="http://menhao.net:30444/nywaterway/32";
 var timer=5000;
 
+colorValues = {
+			'32':	"red",
+			'22':	"blue",
+			'21':	"green",
+			'1':	"brown",
+			'40':	"purple",
+			'43':	"pink",
+			'33':   "red",
+			'34':   "blue",
+			'36':   "brown",
+			'42':   "purple",
+			'38':   "green"
+			}
 var bus_location =null;
 
 function loadBus(){
@@ -37,7 +50,8 @@ function loadBus(){
                 + current_hour + ":"
                 + current_min + ":"
                 + currentdate.getSeconds() +"; <br>Day of the week: "
-                + date_of_week;
+                + date_of_week+"; <br>currtime: "
+                + current_time;
             document.getElementById("info1").innerHTML = datetime;
             console.log(bus_location);
 
@@ -98,21 +112,46 @@ function loadRoute(){
             document.getElementById("info2").innerHTML = "Off Peak Map";
             return "mhroutesOffpeak.geojson";
         };};
+
+
     bus_route.loadGeoJson(getGeojsonByTime());
     bus_route.setMap(map);
 
+    // Set click event for each route.
+    // Color each route by id. Change stroke when the isHighlighted property is set to true.
     var setColorStyle = function(feature) {
-        if(feature.getProperty('id')==33){
-            return {
-                strokeColor: '	#006699',
-                strokeWeight: 4
-            }
-        }else{
-            return {
-                strokeColor: '#79a6d2',
-                strokeWeight: 4
-            }};};
+          var color = colorValues[feature.getProperty('id')];
+          var stroke =1;
+          if (feature.getProperty('isHighlighted')) {
+            stroke = 3;
+          }
+          return ({
+            strokeColor: color,
+            strokeWeight: stroke
+          });
+        }
     bus_route.setStyle(setColorStyle);
+
+    // On click, set 'isHighlighted', highlight.
+    bus_route.addListener('click', function(event) {
+      event.feature.setProperty('isHighlighted', true);
+    });
+    // On map click, clear highlight;
+    map.addListener('click', function() {
+        bus_route.forEach(function(feature){
+            feature.setProperty('isHighlighted',false);
+        });
+        bus_route.setStyle(setColorStyle);
+    });
+    // On hover, revertStyle and highlight current;
+    bus_route.addListener('mouseover', function(event) {
+      bus_route.revertStyle();
+      bus_route.overrideStyle(event.feature, {strokeWeight: 2});
+    });
+
+    bus_route.addListener('mouseout', function(event) {
+      bus_route.revertStyle();
+    });
 }
 // Try HTML5 geolocation.
 function GetMyLocation(){
