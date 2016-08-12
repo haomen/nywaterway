@@ -67,7 +67,12 @@ def getAllBusLocations():
         for route_id in route_ids:
             #print route_id
             a_route=nywBusPos(route_id)
-            bus_pos_on_route=a_route.queryBusGPSPositionOnRoad()
+
+            try:
+                bus_pos_on_route=a_route.queryBusGPSPositionOnRoad()
+            except Exception as e:
+                logger.error("error get bus positions: "+e)
+
             bus_pos_item={}
             for bus_pos in bus_pos_on_route:
                 #print bus_pos
@@ -89,9 +94,14 @@ def getAllBusLocations():
                 except Exception as e:
                     logger.error("error writing record into db "+e)
                     db.rollback()
-            bus_pool.update(bus_pos_item)
+            if not bus_pos_item:
+                logger.info("not getting any bus positions this time!")
+            else:
+                bus_pool.update(bus_pos_item)
+
         db.close()
         time.sleep(interval)
+
 def checkTime():
     while True:
         if datetime.datetime.now().time()>datetime.time(23,00,00):
